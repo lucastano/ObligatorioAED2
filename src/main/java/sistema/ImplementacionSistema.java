@@ -7,6 +7,9 @@ import interfaz.Retorno;
 import dominio.ObjAux;
 import dominio.Viajero;
 import interfaz.*;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ImplementacionSistema implements Sistema {
     // aca van a ir las estructuras
@@ -36,10 +39,11 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno registrarViajero(String cedula, String nombre, int edad, TipoViajero tipo) {
 
-        Viajero viajero = new Viajero(cedula, nombre, edad, tipo.getTexto());
-        if (cedula == null || cedula.isEmpty() || nombre == null || edad == 0 || tipo.getTexto() == null) {
+
+        if (cedula == null || cedula.isEmpty() || nombre == null || nombre.isEmpty() ||  edad == 0 || tipo == null) {
             return Retorno.error1("algun parametro vacio");
         }
+        Viajero viajero = new Viajero(cedula, nombre, edad, tipo.getTexto());
         if (!viajero.validarCedula()) {
 
 
@@ -58,22 +62,20 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno buscarViajero(String cedula) {
-
-       if(!validarCedula(cedula))
-        {
-            return Retorno.error1("Cedula no valida");
+        Viajero viajeroBuscado= new Viajero(cedula);
+        if(!viajeroBuscado.validarCedula()){
+            return Retorno.error1("cedula no valida");
         }
-        Viajero viajeroBuscado=new Viajero(cedula);
-        ObjAux<Viajero>aux = viajeros.obtenerPorCedula(viajeroBuscado);
-        Viajero viajero =aux.getDato();
-
-        if(viajero==null)
-        {
-            return Retorno.error2("No existe el viajero");
+        ObjAux<Viajero> aux=viajeros.obtenerPorCedula(viajeroBuscado);
+        if(aux==null){
+            return Retorno.error2("no existe viajero registrado");
         }
 
-        return Retorno.ok(aux.getCant(), viajero.toString());
+        System.out.println("retorno");
+        System.out.println(aux.getCant());
+        System.out.println(aux.getDato().toString());
 
+        return Retorno.ok(aux.getCant(),aux.getDato().toString());
     }
 
     @Override
@@ -127,11 +129,7 @@ public class ImplementacionSistema implements Sistema {
     }
 
 
-    //por ahora siempre devuelve true
-    public boolean validarCedula(String cedula) {
-        return true;
 
-    }
 
     public String retorno(ListaImp<Viajero> lista) {
 

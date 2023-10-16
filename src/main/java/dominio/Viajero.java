@@ -42,10 +42,22 @@ public class Viajero implements Comparable<Viajero> {
     }
 
     public boolean validarCedula() {
-        String patron = "^(\\d{1,3}(\\.\\d{3})*-\\d{1}|\\d{1,3}-\\d{1})$";
-        Pattern pattern = Pattern.compile(patron);
-        Matcher matcher = pattern.matcher(this.cedula);
+        if(this.cedula==null || this.cedula.isEmpty() || this.cedula.length() > 11  ){
+            return false;
+        }
+        char primerDigito = this.cedula.charAt(0);
+        int primerDigitoN = Character.getNumericValue(primerDigito);
 
+        if (primerDigitoN == 0){
+            return false;
+        }
+
+        String cedula=this.cedula;
+        String regex = "^(\\d{1,3}\\.)?\\d{1,3}\\.\\d{1,3}-$";
+            // valida N.NNN.NNN- y NNN.NNN-
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cedula.substring(0, cedula.length() -1));
+        // quitamos los dos ultimos caracteres para que no tome el identificador.
         return matcher.matches();
 
     }
@@ -65,21 +77,11 @@ public class Viajero implements Comparable<Viajero> {
 
     @Override
     public int compareTo(Viajero o) {
-        int indiceGuionCedulaO=o.getCedula().lastIndexOf("-");
-        int indiceGuionCedulaThis=this.cedula.lastIndexOf("-");
-        String cedulaSinGuionO="";
-        String cedulaSinGuionThis="";
-        if(indiceGuionCedulaO!=-1){
-             cedulaSinGuionO=o.getCedula().substring(0,indiceGuionCedulaO);
-             cedulaSinGuionThis=this.cedula.substring(0,indiceGuionCedulaThis);
-
-        }
-        cedulaSinGuionThis=cedulaSinGuionThis.replace(".","");
-        cedulaSinGuionO=cedulaSinGuionO.replace(".","");
-
-        int cedula = Integer.parseInt(cedulaSinGuionThis);
-        int cedula2 = Integer.parseInt(cedulaSinGuionO);
-        return Integer.compare(cedula, cedula2);
+        String cedula = this.cedula.replace(".", "").replace("-", "");
+        int cedulaInt=Integer.parseInt(cedula);
+        String cedula2 = o.getCedula().replace(".", "").replace("-", "");
+        int cedulaInt2=Integer.parseInt(cedula2);
+        return Integer.compare(cedulaInt,cedulaInt2);
     }
 
     @Override
