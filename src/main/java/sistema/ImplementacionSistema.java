@@ -1,8 +1,9 @@
 package sistema;
 
 import Estructuras.ABB;
-import Estructuras.Lista;
+
 import Estructuras.ListaImp;
+import interfaz.Retorno;
 import dominio.ObjAux;
 import dominio.Viajero;
 import interfaz.*;
@@ -34,12 +35,9 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarViajero(String cedula, String nombre, int edad, TipoViajero tipo) {
-        //hay que validar cedula con expreciones regulares
-        // hay que buscar el viajero en el abb , si existe no podes registrarlo
-        //verificar nullos
-        //debe usar el validar cedula
+
         Viajero viajero = new Viajero(cedula, nombre, edad, tipo.getTexto());
-        if (cedula == null || nombre == null || edad == 0 || tipo.getTexto() == null) {
+        if (cedula == null || cedula.isEmpty() || nombre == null || edad == 0 || tipo.getTexto() == null) {
             return Retorno.error1("algun parametro vacio");
         }
         if (!viajero.validarCedula()) {
@@ -56,44 +54,46 @@ public class ImplementacionSistema implements Sistema {
         viajeros.insertar(viajero);
         return Retorno.ok();
 
-        //return Retorno.noImplementada();
     }
 
     @Override
     public Retorno buscarViajero(String cedula) {
-        //validar cedula fuera de viajero
-        //como devolvemos la cantidad , si el obtenerPorCedula nos devuelve un objeto viajero
-//        if(!validarCedula(cedula))
-//        {
-//            return Retorno.error1("Cedula no valida");
-//        }
-//        Viajero viajeroBuscado=new Viajero(cedula);
-//        ObjAux<Viajero>aux = viajeros.obtenerPorCedula(viajeroBuscado);
-//        Viajero viajero =aux.getDato();
-//
-//        if(viajero==null)
-//        {
-//            return Retorno.error2("No existe el viajero");
-//        }
-//        //Retorno ret= new Retorno(Retorno.Resultado.OK,aux.getCant(),viajero.toString());
-//        return Retorno.ok(viajero.toString(),aux.getCant());
-        return Retorno.noImplementada();
+
+       if(!validarCedula(cedula))
+        {
+            return Retorno.error1("Cedula no valida");
+        }
+        Viajero viajeroBuscado=new Viajero(cedula);
+        ObjAux<Viajero>aux = viajeros.obtenerPorCedula(viajeroBuscado);
+        Viajero viajero =aux.getDato();
+
+        if(viajero==null)
+        {
+            return Retorno.error2("No existe el viajero");
+        }
+
+        return Retorno.ok(aux.getCant(), viajero.toString());
+
     }
 
     @Override
     public Retorno listarViajerosAscendente() {
 
-//        ListaImp<Viajero>listaViajeros=new ListaImp<Viajero>();
-//        listaViajeros=viajeros.obtenerViajerosDsec();
-//
-//       Retorno ret= new Retorno(Retorno.Resultado.OK,0,retorno(listaViajeros));
-//       return Retorno.ok(listaViajeros).;
-        return Retorno.noImplementada();
+        ListaImp<Viajero>listaViajeros= new ListaImp<Viajero>();
+        listaViajeros=viajeros.obtenerViajerosAsc();
+        String listaViajerosStr = retorno(listaViajeros);
+        String prueba = listaViajerosStr.substring(0, listaViajerosStr.length()-1);
+        return Retorno.ok(0,prueba);
+
     }
 
     @Override
     public Retorno listarViajerosDescendente() {
-        return Retorno.noImplementada();
+        ListaImp<Viajero>listaViajeros= new ListaImp<Viajero>();
+        listaViajeros= viajeros.obtenerViajerosDsc();
+        String listaViajerosStr = retorno(listaViajeros);
+        String prueba = listaViajerosStr.substring(0, listaViajerosStr.length()-1);
+        return Retorno.ok(0,prueba);
     }
 
     @Override
@@ -139,7 +139,8 @@ public class ImplementacionSistema implements Sistema {
         for (Viajero v : lista) {
             retorno += v.toString() + "|";
         }
-        return retorno;
+
+        return retorno;//.substring(0, retorno.length()-1)
 
     }
 }

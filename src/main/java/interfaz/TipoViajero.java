@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public enum TipoViajero {
-    PREMIUM(0, "Premium"),
-    ESTANDAR(1, "Estandar"),
-    CASUAL(2, "Casual");
+    PREMIUM(0, "PREMIUM"),
+    ESTANDAR(1, "ESTANDAR"),
+    CASUAL(2, "CASUAL");
 
     private final int indice;
     private final String texto;

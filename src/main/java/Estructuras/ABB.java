@@ -52,21 +52,38 @@ public class ABB<T extends Comparable<T>> {
 
 
     //se debe llamar diferente ya que el abb no necesariamente es de viajeros
-    public ListaImp<T> obtenerViajerosDsec() {
+    public ListaImp<T> obtenerViajerosAsc() {
         ListaImp<T> retorno = new ListaImp<T>();
-        obtenerViajerosDsec(raiz, retorno);
+        obtenerViajerosAsc(raiz, retorno);
         return retorno;
     }
 
-    public void obtenerViajerosDsec(Nodo<T> nodo, ListaImp<T> retorno) {
+    public void obtenerViajerosAsc(Nodo<T> nodo, ListaImp<T> retorno) {
         if (nodo != null) {
-            obtenerViajerosDsec(nodo.getDer(), retorno);
+            obtenerViajerosAsc(nodo.getDer(), retorno);
             retorno.insertar(nodo.getDato());
-            obtenerViajerosDsec(nodo.getIzq(), retorno);
+            obtenerViajerosAsc(nodo.getIzq(), retorno);
         }
 
 
     }
+
+    public ListaImp<T> obtenerViajerosDsc() {
+        ListaImp<T> retorno = new ListaImp<T>();
+        obtenerViajerosDsc(raiz, retorno);
+        return retorno;
+    }
+
+    public void obtenerViajerosDsc(Nodo<T> nodo, ListaImp<T> retorno) {
+        if (nodo != null) {
+            obtenerViajerosDsc(nodo.getIzq(), retorno);
+            retorno.insertar(nodo.getDato());
+            obtenerViajerosDsc(nodo.getDer(), retorno);
+        }
+    }
+
+
+
 
     public T obtener(T dato) {
         return obtener(raiz, dato);
