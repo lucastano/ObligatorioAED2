@@ -17,6 +17,10 @@ public class ImplementacionSistema implements Sistema {
     int cantidasMaxCiudades;
     ABB<Viajero> viajeros;
 
+    ListaImp<Viajero> viajerosPremium;
+    ListaImp<Viajero> viajerosCasual;
+    ListaImp<Viajero> viajerosEstandar;
+
     @Override
     public Retorno inicializarSistema(int maxCiudades) {
 
@@ -26,9 +30,10 @@ public class ImplementacionSistema implements Sistema {
         } else {
             //Inicializamos cantidad maxima de ciudades para el grafo
             this.cantidasMaxCiudades = maxCiudades;
-            //inicializamos abb viajero
             this.viajeros = new ABB<Viajero>();
-            //aca inicializamos grafo y abb
+            this.viajerosPremium = new ListaImp<Viajero>();
+            this.viajerosCasual = new ListaImp<Viajero>();
+            this.viajerosEstandar = new ListaImp<Viajero>();
             return Retorno.ok();
 
         }
@@ -56,6 +61,13 @@ public class ImplementacionSistema implements Sistema {
         }
 
         viajeros.insertar(viajero);
+        if(tipo.getTexto().equals("PREMIUM")){
+            viajerosPremium.insertar(viajero);
+        }else if (tipo.getTexto().equals("CASUAL")){
+            viajerosCasual.insertar(viajero);
+        }else{
+            viajerosEstandar.insertar(viajero);
+        }
         return Retorno.ok();
 
     }
@@ -84,8 +96,15 @@ public class ImplementacionSistema implements Sistema {
         ListaImp<Viajero>listaViajeros= new ListaImp<Viajero>();
         listaViajeros=viajeros.obtenerViajerosAsc();
         String listaViajerosStr = retorno(listaViajeros);
-        String prueba = listaViajerosStr.substring(0, listaViajerosStr.length()-1);
-        return Retorno.ok(0,prueba);
+        if(!listaViajerosStr.isEmpty()){
+            String prueba = listaViajerosStr.substring(0, listaViajerosStr.length()-1);
+            return Retorno.ok(0,prueba);
+        }else{
+            return Retorno.ok(0,listaViajerosStr);
+        }
+
+
+
 
     }
 
@@ -94,14 +113,44 @@ public class ImplementacionSistema implements Sistema {
         ListaImp<Viajero>listaViajeros= new ListaImp<Viajero>();
         listaViajeros= viajeros.obtenerViajerosDsc();
         String listaViajerosStr = retorno(listaViajeros);
-        String prueba = listaViajerosStr.substring(0, listaViajerosStr.length()-1);
-        return Retorno.ok(0,prueba);
+        if(!listaViajerosStr.isEmpty()){
+            String prueba = listaViajerosStr.substring(0, listaViajerosStr.length()-1);
+            return Retorno.ok(0,prueba);
+        }else{
+            return Retorno.ok(0,listaViajerosStr);
+        }
     }
 
     @Override
     public Retorno listarViajerosPorTipo(TipoViajero tipo) {
-        return Retorno.noImplementada();
+        if(tipo == null){
+            return Retorno.error1("el tipo no puede ser null");
+        }
+        if(tipo.getTexto().equals("CASUAL")){
+            String ret = retorno(viajerosCasual);
+            if(!ret.isEmpty()){
+                return Retorno.ok(ret.substring(0, ret.length()-1));
+            }else{
+                return Retorno.ok(ret);
+            }
+        }else if (tipo.getTexto().equals("PREMIUM")){
+            String ret = retorno(viajerosPremium);
+            if(!ret.isEmpty()){
+                return Retorno.ok(ret.substring(0, ret.length()-1));
+            }else{
+                return Retorno.ok(ret);
+            }
+        }else{
+            String ret = retorno(viajerosEstandar);
+            if(!ret.isEmpty()){
+                return Retorno.ok(ret.substring(0, ret.length()-1));
+            }else{
+                return Retorno.ok(ret);
+            }
+        }
     }
+
+
 
     @Override
     public Retorno registrarCiudad(String codigo, String nombre) {

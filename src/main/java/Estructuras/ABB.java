@@ -61,7 +61,7 @@ public class ABB<T extends Comparable<T>> {
     public void obtenerViajerosAsc(Nodo<T> nodo, ListaImp<T> retorno) {
         if (nodo != null) {
             obtenerViajerosAsc(nodo.getDer(), retorno);
-            retorno.insertar(nodo.getDato());
+            retorno.insertarDos(nodo.getDato());
             obtenerViajerosAsc(nodo.getIzq(), retorno);
         }
 
@@ -77,7 +77,7 @@ public class ABB<T extends Comparable<T>> {
     public void obtenerViajerosDsc(Nodo<T> nodo, ListaImp<T> retorno) {
         if (nodo != null) {
             obtenerViajerosDsc(nodo.getIzq(), retorno);
-            retorno.insertar(nodo.getDato());
+            retorno.insertarDos(nodo.getDato());
             obtenerViajerosDsc(nodo.getDer(), retorno);
         }
     }

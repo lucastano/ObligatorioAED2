@@ -2,7 +2,7 @@ package Estructuras;
 
 import java.util.Iterator;
 
-public class ListaImp<T> implements Lista<T> {
+public class ListaImp<T extends Comparable<T>> implements Lista<T> {
 
     protected NodoLista<T> inicio;
     protected int largo;
@@ -12,11 +12,44 @@ public class ListaImp<T> implements Lista<T> {
         this.largo = 0;
     }
 
-    @Override
-    public void insertar(T dato) {
+    public void insertarDos(T dato) {
         inicio = new NodoLista<T>(dato, inicio);
         largo++;
     }
+    public void insertar(T dato) {
+        NodoLista<T> nuevoNodo = new NodoLista<T>(dato);
+
+        if (inicio == null) {
+            inicio = new NodoLista<T>(dato, inicio);
+            largo++;
+            return;
+        }
+
+        if (dato.compareTo(inicio.getDato()) < 0) {
+            NodoLista<T> aux = inicio;
+            inicio = new NodoLista<>(dato, inicio);
+            inicio.setSig(aux);
+            largo++;
+            return;
+        }
+
+        NodoLista<T> actual = inicio;
+        NodoLista<T> anterior = null;
+
+        while (actual != null && dato.compareTo(actual.getDato()) > 0) {
+            anterior = actual;
+            actual = actual.getSig();
+        }
+
+        if (actual == null) {
+            anterior.setSig(nuevoNodo);
+        } else {
+            nuevoNodo.setSig(actual);
+            anterior.setSig(nuevoNodo);
+        }
+        largo++;
+    }
+
 
 
     @Override
