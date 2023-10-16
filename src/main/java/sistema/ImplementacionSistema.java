@@ -3,6 +3,7 @@ package sistema;
 import Estructuras.ABB;
 
 import Estructuras.ListaImp;
+import dominio.Ciudad;
 import interfaz.Retorno;
 import dominio.ObjAux;
 import dominio.Viajero;
@@ -16,6 +17,8 @@ public class ImplementacionSistema implements Sistema {
     // las ciudades van a ser la cantidad de vertices del grafo
     int cantidasMaxCiudades;
     ABB<Viajero> viajeros;
+
+
 
     ListaImp<Viajero> viajerosPremium;
     ListaImp<Viajero> viajerosCasual;
@@ -34,6 +37,7 @@ public class ImplementacionSistema implements Sistema {
             this.viajerosPremium = new ListaImp<Viajero>();
             this.viajerosCasual = new ListaImp<Viajero>();
             this.viajerosEstandar = new ListaImp<Viajero>();
+
             return Retorno.ok();
 
         }
@@ -154,6 +158,15 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarCiudad(String codigo, String nombre) {
+        if(codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()){
+            return Retorno.error1("Alguno de los datos es vacio");
+        }
+        Ciudad ciudad = new Ciudad(codigo, nombre);
+        if(!ciudad.validarCodigo()){
+            return Retorno.error2("El codigo no es valido");
+        }
+        // falta validar que ya este a tope el maximo de ciudades
+        // falta validar que el codigo ya exista
         return Retorno.noImplementada();
     }
 
