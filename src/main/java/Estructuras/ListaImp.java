@@ -1,5 +1,6 @@
 package Estructuras;
 
+import java.sql.SQLOutput;
 import java.util.Iterator;
 
 public class ListaImp<T extends Comparable<T>> implements Lista<T> {
@@ -50,6 +51,20 @@ public class ListaImp<T extends Comparable<T>> implements Lista<T> {
         largo++;
     }
 
+    //verificar si esta bien este existe
+    public boolean existe(T elemento){
+        return existe(this.inicio,elemento);
+    }
+    private boolean existe(NodoLista<T> nodo,T elemento){
+        if(nodo==null){
+            return false;
+        }
+        if(nodo.getDato().compareTo(elemento)==0){
+            return true;
+        }
+        return existe(nodo.getSig(),elemento);
+    }
+
 
 
     @Override
@@ -60,6 +75,15 @@ public class ListaImp<T extends Comparable<T>> implements Lista<T> {
     @Override
     public boolean esVacia() {
         return largo == 0;
+    }
+
+    public void mostrarLista(){
+        NodoLista<T> nodo=this.inicio;
+        while(nodo!=null){
+            System.out.println(nodo.getDato().toString());
+            nodo=nodo.getSig();
+
+        }
     }
 
     @Override

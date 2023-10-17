@@ -10,9 +10,9 @@ public class TestSistema {
 
 
     @Test
-    public void checkearInicializarOk() {
-        Sistema s = new ImplementacionSistema();
-        checkearError1(s.inicializarSistema(2), "Deberia haber dado error");
-        checkearOk(s.inicializarSistema(6), "Deberia haber funcionado");
+    public void checkearInicializarOk(){
+        Sistema s=new ImplementacionSistema();
+        checkearError1(s.inicializarSistema(2),"Deberia haber dado error");
+        checkearOk(s.inicializarSistema(6),"Deberia haber funcionado");
     }
 }

@@ -17,12 +17,13 @@ public class ImplementacionSistema implements Sistema {
     // las ciudades van a ser la cantidad de vertices del grafo
     int cantidasMaxCiudades;
     ABB<Viajero> viajeros;
-
-
-
+    //lista de viajeros por tipo
     ListaImp<Viajero> viajerosPremium;
     ListaImp<Viajero> viajerosCasual;
     ListaImp<Viajero> viajerosEstandar;
+
+    //Lista de ciudades
+    ListaImp<Ciudad> ciudades;
 
     @Override
     public Retorno inicializarSistema(int maxCiudades) {
@@ -158,16 +159,23 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarCiudad(String codigo, String nombre) {
+        if(ciudades.largo()>=cantidasMaxCiudades){
+            return Retorno.error1("Cantidad maxima ciudades superadas");
+        }
         if(codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()){
-            return Retorno.error1("Alguno de los datos es vacio");
+            return Retorno.error2("Alguno de los datos es vacio");
         }
         Ciudad ciudad = new Ciudad(codigo, nombre);
         if(!ciudad.validarCodigo()){
-            return Retorno.error2("El codigo no es valido");
+            return Retorno.error3("El codigo no es valido");
         }
-        // falta validar que ya este a tope el maximo de ciudades
-        // falta validar que el codigo ya exista
-        return Retorno.noImplementada();
+        if(ciudades.existe(ciudad))
+        {
+            return Retorno.error4("Ya existe una ciudad con ese codigo");
+        }
+        ciudades.insertar(ciudad);
+        ciudades.mostrarLista();
+        return Retorno.ok();
     }
 
     @Override

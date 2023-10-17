@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sistema.auxiliares.TestViajeroDato;
 
-import java.util.*;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -99,61 +99,61 @@ public class TestViajeros {
         TestViajeroDato viajeroValido = new TestViajeroDato("3.211.322-3", "Algun nombre", 23, TipoViajero.CASUAL);
         agregueUnViajero(s, viajeroValido);
         //cuando
-        TestViajeroDato viajeroCedulaInvalida = new TestViajeroDato("algoquenosepareceaunacedula", "Un nombre", 23, TipoViajero.CASUAL);
+        TestViajeroDato viajeroCedulaInvalida = new TestViajeroDato("algoquenosepareceaunacedula", null, 23, TipoViajero.CASUAL);
         Retorno resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("2.323222-3", "Un nombre", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("2.323222-3", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("2#323#222-3", "Otro nombre", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("2#323#222-3", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "En las regexp el . significa cualquier caracter");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("40.232.222-2", "Nom", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("40.232.222-2", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("0.232.222-2", "nom", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("0.232.222-2", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("032.222-2", "Nombre", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("332.222-", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("2.3.2.1.2", "nombre", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("2.3.2.1.2", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("ba2.342.233-2", "Otro nombre", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("ba2.342.233-2", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("2.342.233-2222", "Otro nom", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("2.342.233-2222", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
 
         //cuando
-        viajeroCedulaInvalida = new TestViajeroDato("2.3\422.233-2222", "Nombre", 23, TipoViajero.CASUAL);
+        viajeroCedulaInvalida = new TestViajeroDato("2.3\422.233-2222", "Algun nombre", 23, TipoViajero.CASUAL);
         resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
@@ -234,6 +234,99 @@ public class TestViajeros {
             Assertions.assertEquals(viajeroABuscar, TestViajeroDato.fromString(resultado.getValorString()));
         }
 
+    }
+
+    @Test
+    public void testBuscarPasajerosOkIteraciones() {
+        Sistema s = tengoUnSistemaValido();
+
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[2]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[3]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[1]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[6]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[4]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[5]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[9]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[7]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[8]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[0]);
+
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[2], 0);//raiz
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[3], 1);//derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[1], 1);//izquierda
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[6], 2);//derecha, derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[4], 3);//derecha, derecha, izquierda
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[5], 4);// derecha, derecha,izquierda,derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[9], 3);// derecha, derecha,derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[7], 4);// derecha, derecha,derecha,izquieda
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[8], 5);// derecha, derecha,derecha,izquieda,derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[0], 2);//izquierda,izquierda
+
+    }
+
+    @Test
+    public void testConReinicio() {
+        Sistema s = tengoUnSistemaValido();
+        for (TestViajeroDato v : VIAJEROS_VALIDOS_ORDENADOS) {
+            agregueUnViajero(s, v);
+        }
+        //dado que tengo un sistema con los pasajeros agregados en orden ascendente
+        //chequeamos que el arbol haya quedado degenerado en una lista
+
+        for (int i = 0; i < VIAJEROS_VALIDOS_ORDENADOS.length; i++) {
+
+            chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[i], i);
+        }
+        //chequeamos que todas las consultas funcionen correctamente.
+        AuxAsserciones.checkearOk(s.listarViajerosAscendente(), viajerosToString(VIAJEROS_VALIDOS_ORDENADOS), "Deberian estar todos");
+        AuxAsserciones.checkearOk(s.listarViajerosDescendente(), viajerosToString(VIAJEROS_VALIDOS_ORDENADOS_AL_REVES), "Deberian estar todos");
+        AuxAsserciones.checkearOk(s.listarViajerosPorTipo(TipoViajero.PREMIUM), viajerosToString(Arrays.stream(VIAJEROS_VALIDOS_ORDENADOS)
+                .filter(v -> v.getTipoViajero() == TipoViajero.PREMIUM)), "Deberian estar todos");
+        //reinicializamos el sistema chequeamos que todo se haya limpiado
+        s.inicializarSistema(20);
+
+        for (int i = 0; i < VIAJEROS_VALIDOS_ORDENADOS.length; i++) {
+            AuxAsserciones.checkearError2(s.buscarViajero(VIAJEROS_VALIDOS_ORDENADOS[i].getCedula()), "Al reinicializar no deberia haber memoria del sistema anterior");
+        }
+        AuxAsserciones.checkearOk(s.listarViajerosAscendente(),"","Tiene que ser vacio");
+        AuxAsserciones.checkearOk(s.listarViajerosDescendente(),"","Tiene que ser vacio");
+        AuxAsserciones.checkearOk(s.listarViajerosPorTipo(TipoViajero.PREMIUM),"","Tiene que ser vacio");
+        AuxAsserciones.checkearOk(s.listarViajerosPorTipo(TipoViajero.ESTANDAR),"","Tiene que ser vacio");
+
+        //chequeamos que podamos reagregar a los viajeros.
+
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[0]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[2]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[8]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[4]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[3]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[1]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[5]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[9]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[6]);
+        agregueUnViajero(s, VIAJEROS_VALIDOS_ORDENADOS[7]);
+
+        //chequeamos que todas las consultas funcionen correctamente.
+        AuxAsserciones.checkearOk(s.listarViajerosAscendente(), viajerosToString(VIAJEROS_VALIDOS_ORDENADOS), "Deberian estar todos");
+        AuxAsserciones.checkearOk(s.listarViajerosDescendente(), viajerosToString(VIAJEROS_VALIDOS_ORDENADOS_AL_REVES), "Deberian estar todos");
+        AuxAsserciones.checkearOk(s.listarViajerosPorTipo(TipoViajero.PREMIUM), viajerosToString(Arrays.stream(VIAJEROS_VALIDOS_ORDENADOS)
+                .filter(v -> v.getTipoViajero() == TipoViajero.PREMIUM)), "Deberian estar todos");
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[0], 0);//raiz
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[2], 1);//derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[8], 2);//derecha,derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[4], 3);//derecha, derecha,izquierda
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[3], 4);//derecha, derecha, izquierda,izquierda
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[1], 2);//derecha,izquieda
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[5], 4);// derecha, derecha,izquieda,derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[9], 3);// derecha, derecha,derecha,
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[6], 5);// derecha, derecha,izquieda,derecha,derecha
+        chequearBusquedaCorrecta(s, VIAJEROS_VALIDOS_ORDENADOS[7], 6);// derecha, derecha,izquieda,derecha,derecha,dercha
+
+    }
+
+    private void chequearBusquedaCorrecta(Sistema s, TestViajeroDato dato, int cantidadIteraciones) {
+
+        AuxAsserciones.checkearOk(s.buscarViajero(dato.getCedula()), cantidadIteraciones, viajeroToString(dato), "La busqueda dio resultados invalidos");
     }
 
     @Test
@@ -318,8 +411,12 @@ public class TestViajeros {
     }
 
     private static String viajerosToString(Stream<TestViajeroDato> viajeros) {
-        return viajeros.map(v -> format("%s;%s;%s;%s",
-                v.getCedula(), v.getNombre(), v.getEdad(), v.getTipoViajero())).collect(Collectors.joining("|"));
+        return viajeros.map(v -> viajeroToString(v)).collect(Collectors.joining("|"));
+    }
+
+    private static String viajeroToString(TestViajeroDato v) {
+        return format("%s;%s;%s;%s",
+                v.getCedula(), v.getNombre(), v.getEdad(), v.getTipoViajero());
     }
 
     @Test

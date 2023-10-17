@@ -9,12 +9,15 @@ public class Ciudad  implements Comparable<Ciudad>{
     private String nombre;
 
 
+
     public Ciudad(String codigo, String nombre){
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
     public boolean validarCodigo(){
+        //codigo alfanumerico  al menos de largo 5
+        //letras mayuscula
         String regex = "^[A-Z0-9]{5,}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(this.codigo);
@@ -23,6 +26,6 @@ public class Ciudad  implements Comparable<Ciudad>{
 
     @Override
     public int compareTo(Ciudad o) {
-        return 0;
+        return this.codigo.compareTo(o.codigo);
     }
 }

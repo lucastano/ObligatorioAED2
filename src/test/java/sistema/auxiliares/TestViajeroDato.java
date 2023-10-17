@@ -44,18 +44,18 @@ public class TestViajeroDato {
                 '}';
     }
 
-    public static TestViajeroDato fromString(String resultado) {
+    public static TestViajeroDato fromString(String resultado){
         try {
             String[] partes = resultado.split(";");
-            return new TestViajeroDato(partes[0], partes[1], Integer.parseInt(partes[2]), TipoViajero.valueOf(partes[3]));
-        } catch (Exception e) {
-            Logger.getLogger(TestViajeroDato.class.getCanonicalName()).warning("No pude leer el viajero: '" + resultado + "'");
+            return new TestViajeroDato(partes[0],partes[1],Integer.parseInt(partes[2]),TipoViajero.valueOf(partes[3]));
+        }catch (Exception e){
+            Logger.getLogger(TestViajeroDato.class.getCanonicalName()).warning("No pude leer el viajero: '"+resultado+"'");
             return null;
         }
     }
 
     public TestViajeroDato copia() {
-        return new TestViajeroDato(new String(cedula), new String(nombre), edad, tipoViajero);
+        return new TestViajeroDato(new String(cedula),new String(nombre),edad,tipoViajero);
     }
 
     @Override
