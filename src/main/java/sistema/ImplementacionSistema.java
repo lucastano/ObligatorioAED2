@@ -18,9 +18,9 @@ public class ImplementacionSistema implements Sistema {
     int cantidasMaxCiudades;
     ABB<Viajero> viajeros;
     //lista de viajeros por tipo
-    ListaImp<Viajero> viajerosPremium;
-    ListaImp<Viajero> viajerosCasual;
-    ListaImp<Viajero> viajerosEstandar;
+    ABB<Viajero> viajerosPremium;
+    ABB<Viajero> viajerosCasual;
+    ABB<Viajero> viajerosEstandar;
 
     //Lista de ciudades
     ListaImp<Ciudad> ciudades;
@@ -35,9 +35,9 @@ public class ImplementacionSistema implements Sistema {
             //Inicializamos cantidad maxima de ciudades para el grafo
             this.cantidasMaxCiudades = maxCiudades;
             this.viajeros = new ABB<Viajero>();
-            this.viajerosPremium = new ListaImp<Viajero>();
-            this.viajerosCasual = new ListaImp<Viajero>();
-            this.viajerosEstandar = new ListaImp<Viajero>();
+            this.viajerosPremium  = new ABB<Viajero>();
+            this.viajerosCasual  = new ABB<Viajero>();
+            this.viajerosEstandar  = new ABB<Viajero>();
 
             return Retorno.ok();
 
@@ -128,25 +128,30 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno listarViajerosPorTipo(TipoViajero tipo) {
+        ListaImp<Viajero>listaViajeros= new ListaImp<Viajero>();
         if(tipo == null){
             return Retorno.error1("el tipo no puede ser null");
         }
         if(tipo.getTexto().equals("CASUAL")){
-            String ret = retorno(viajerosCasual);
+            listaViajeros=viajerosCasual.obtenerViajerosAsc();
+            String ret = retorno(listaViajeros);
             if(!ret.isEmpty()){
                 return Retorno.ok(ret.substring(0, ret.length()-1));
             }else{
                 return Retorno.ok(ret);
             }
         }else if (tipo.getTexto().equals("PREMIUM")){
-            String ret = retorno(viajerosPremium);
+            listaViajeros=viajerosPremium.obtenerViajerosAsc();
+            String ret = retorno(listaViajeros);
             if(!ret.isEmpty()){
                 return Retorno.ok(ret.substring(0, ret.length()-1));
             }else{
                 return Retorno.ok(ret);
             }
         }else{
-            String ret = retorno(viajerosEstandar);
+            listaViajeros=viajerosEstandar.obtenerViajerosAsc();
+            String ret = retorno(listaViajeros);
+
             if(!ret.isEmpty()){
                 return Retorno.ok(ret.substring(0, ret.length()-1));
             }else{
