@@ -26,6 +26,13 @@ public class Ciudad  implements Comparable<Ciudad>{
 
     @Override
     public int compareTo(Ciudad o) {
+
         return this.codigo.compareTo(o.codigo);
+
+    }
+
+    @Override
+    public String toString() {
+        return nombre +" - "+codigo;
     }
 }

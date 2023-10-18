@@ -2,6 +2,7 @@ package sistema;
 
 import Estructuras.ABB;
 
+import Estructuras.Grafo;
 import Estructuras.ListaImp;
 import dominio.Ciudad;
 import interfaz.Retorno;
@@ -21,9 +22,10 @@ public class ImplementacionSistema implements Sistema {
     ABB<Viajero> viajerosPremium;
     ABB<Viajero> viajerosCasual;
     ABB<Viajero> viajerosEstandar;
+    Grafo grafoCiudades;
 
     //Lista de ciudades
-    ListaImp<Ciudad> ciudades;
+    //ListaImp<Ciudad> ciudades;
 
     @Override
     public Retorno inicializarSistema(int maxCiudades) {
@@ -38,6 +40,8 @@ public class ImplementacionSistema implements Sistema {
             this.viajerosPremium  = new ABB<Viajero>();
             this.viajerosCasual  = new ABB<Viajero>();
             this.viajerosEstandar  = new ABB<Viajero>();
+            //Inicializamos grafo con tope ciudades
+            this.grafoCiudades=new Grafo(maxCiudades,true);
 
             return Retorno.ok();
 
@@ -164,27 +168,29 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarCiudad(String codigo, String nombre) {
-        if(ciudades.largo()>=cantidasMaxCiudades){
-            return Retorno.error1("Cantidad maxima ciudades superadas");
+        if(codigo==null || codigo.isEmpty() || nombre==null || nombre.isEmpty()){
+            return Retorno.error2("Algun dato vacio o nulo");
         }
-        if(codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()){
-            return Retorno.error2("Alguno de los datos es vacio");
+        if(grafoCiudades.esLleno()){
+            return Retorno.error1("Grafo lleno");
         }
-        Ciudad ciudad = new Ciudad(codigo, nombre);
-        if(!ciudad.validarCodigo()){
-            return Retorno.error3("El codigo no es valido");
+         Ciudad c=new Ciudad(codigo,nombre);
+        if(!c.validarCodigo()){
+            return Retorno.error3("Codigo no valido");
         }
-        if(ciudades.existe(ciudad))
-        {
-            return Retorno.error4("Ya existe una ciudad con ese codigo");
+        if(grafoCiudades.existeVertice(c)){
+            return Retorno.error4("Ya existe esta ciudad");
         }
-        ciudades.insertar(ciudad);
-        ciudades.mostrarLista();
+        grafoCiudades.agregarVertice(c);
         return Retorno.ok();
+
     }
 
     @Override
     public Retorno registrarConexion(String codigoCiudadOrigen, String codigoCiudadDestino, int identificadorConexion, double costo, double tiempo, TipoConexion tipo) {
+       //esto esta aca por ahora para poder ver las ciudades en la lista
+        //ciudades.mostrarLista();
+
         return Retorno.noImplementada();
     }
 

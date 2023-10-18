@@ -6,11 +6,83 @@ import java.util.Iterator;
 public class ListaImp<T extends Comparable<T>> implements Lista<T> {
 
     protected NodoLista<T> inicio;
-    protected int largo;
+    protected NodoLista<T>fin;
+    protected int largo=0;
 
     public ListaImp() {
         this.inicio = null;
-        this.largo = 0;
+
+    }
+
+    public NodoLista<T> getInicio() {
+        return inicio;
+    }
+
+    public NodoLista<T> getFin() {
+        return fin;
+    }
+
+    public int getLargo() {
+        return largo;
+    }
+
+    public void setInicio(NodoLista<T> inicio) {
+        this.inicio = inicio;
+    }
+
+    public void setFin(NodoLista<T> fin) {
+        this.fin = fin;
+    }
+
+    public void setLargo(int largo) {
+        this.largo = largo;
+    }
+
+    public void insertarOrd(T dato){
+        NodoLista<T>nodo=new NodoLista<>(dato);
+        if(this.esVacia()){
+            this.insertarInicio(dato);
+        }
+        else{
+            NodoLista<T>nodoActual=this.inicio;
+            NodoLista<T>anterior=null;
+            while(nodoActual!=null && nodoActual.getDato().compareTo(nodo.getDato())<0){
+                anterior=nodoActual;
+                nodoActual=nodoActual.getSig();
+            }
+
+            if(anterior==null){
+                this.insertarInicio(dato);
+
+            }
+            else{
+                nodo.setSig(nodoActual);
+                anterior.setSig(nodo);
+                largo++;
+            }
+        }
+
+    }
+    public void insertarInicio(T dato) {
+
+        NodoLista<T> nodo= new NodoLista<T>(dato);
+        if(this.esVacia())
+        {
+
+            this.setInicio(nodo);
+            this.setFin(nodo);
+            largo++;
+
+        }
+        else
+        {
+
+            nodo.setSig(inicio);
+            this.setInicio(nodo);
+            largo++;
+
+        }
+
     }
 
     public void insertarDos(T dato) {
