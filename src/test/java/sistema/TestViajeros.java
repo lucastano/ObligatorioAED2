@@ -99,7 +99,7 @@ public class TestViajeros {
         TestViajeroDato viajeroValido = new TestViajeroDato("3.211.322-3", "Algun nombre", 23, TipoViajero.CASUAL);
         agregueUnViajero(s, viajeroValido);
         //cuando
-        TestViajeroDato viajeroCedulaInvalida = new TestViajeroDato("algoquenosepareceaunacedula", null, 23, TipoViajero.CASUAL);
+        TestViajeroDato viajeroCedulaInvalida = new TestViajeroDato("algoquenosepareceaunacedula", "Algun nombre", 23, TipoViajero.CASUAL);
         Retorno resultado = agregoElViajero(s, viajeroCedulaInvalida);
         //entonces
         checkearError2(resultado, "LA cedula no tiene el formato valido");
