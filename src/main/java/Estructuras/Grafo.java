@@ -147,6 +147,7 @@ public class Grafo {
             if( matAdy[pos][j].isExiste() && !visitados[j]){
                 posiciones[index] = pos;
                 dfsRec(j, visitados, cantidad, posiciones, index + 1);
+                int pepe = 0;
             }
         }
     }
