@@ -32,7 +32,16 @@ public class Ciudad  implements Comparable<Ciudad>{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ciudad ciudad = (Ciudad) o;
+        return Objects.equals(codigo, ciudad.codigo) ;
+    }
+    @Override
     public String toString() {
         return nombre +" - "+codigo;
     }
 }
+
+

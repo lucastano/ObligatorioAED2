@@ -2,6 +2,7 @@ package sistema;
 
 import Estructuras.ABB;
 
+import Estructuras.Arista;
 import Estructuras.Grafo;
 import Estructuras.ListaImp;
 import dominio.Ciudad;
@@ -186,17 +187,67 @@ public class ImplementacionSistema implements Sistema {
 
     }
 
+    /* Pasa todas las pruebas pero hay que validar alguna que otra cosa, como q exista la conexcion en base al tipo direccion, etc*/
     @Override
     public Retorno registrarConexion(String codigoCiudadOrigen, String codigoCiudadDestino, int identificadorConexion, double costo, double tiempo, TipoConexion tipo) {
-       //esto esta aca por ahora para poder ver las ciudades en la lista
-        //ciudades.mostrarLista();
-
-        return Retorno.noImplementada();
+       if(costo <= 0 || tiempo <= 0 ){
+           return Retorno.error1(" alguno de los parámetros double es menor o igual a 0.");
+       }
+        if(codigoCiudadDestino == null  ||  codigoCiudadDestino.isEmpty() || codigoCiudadOrigen == null  ||
+          codigoCiudadOrigen.isEmpty() || tipo == null){
+            return Retorno.error2("alguno de los parámetros String o enum es vacío o null.");
+        }
+        Ciudad origen =new Ciudad(codigoCiudadOrigen, "origen");
+        Ciudad destino = new Ciudad(codigoCiudadDestino, "destino");
+        if(!origen.validarCodigo() || !destino.validarCodigo()){
+            return Retorno.error3("alguno de los códigos de ciudad no es válido.");
+        }
+        if(!grafoCiudades.existeVertice(origen)){
+            return Retorno.error4("No existe el origen");
+        }
+        // en esta parte, hay que agregar validacion por tipo de conexion.
+        if(!grafoCiudades.existeVertice(destino)){
+            return Retorno.error5("No existe el destino");
+        }
+        if(grafoCiudades.existeArista(origen, destino, identificadorConexion)){
+            return Retorno.error6("Ya existe la conexcion");
+        }
+        grafoCiudades.agregarArista(origen, destino, identificadorConexion, costo, tiempo, tipo);
+        return Retorno.ok("registrado exitosamente");
     }
+
 
     @Override
     public Retorno actualizarConexion(String codigoCiudadOrigen, String codigoCiudadDestino, int identificadorConexion, double costo, double tiempo, TipoConexion tipo) {
-        return Retorno.noImplementada();
+        if(costo <= 0 || tiempo <= 0 ){
+            return Retorno.error1(" alguno de los parámetros double es menor o igual a 0.");
+        }
+        if(codigoCiudadDestino == null  ||  codigoCiudadDestino.isEmpty() || codigoCiudadOrigen == null  ||
+                codigoCiudadOrigen.isEmpty() || tipo == null){
+            return Retorno.error2("alguno de los parámetros String o enum es vacío o null.");
+        }
+        Ciudad origen =new Ciudad(codigoCiudadOrigen, "prueba");
+        Ciudad destino = new Ciudad(codigoCiudadDestino, "prueba");
+        if(!origen.validarCodigo() || !destino.validarCodigo()){
+            return Retorno.error3("alguno de los códigos de ciudad no es válido.");
+        }
+        if(!grafoCiudades.existeVertice(origen)){
+            return Retorno.error4("No existe el origen");
+        }
+        // en esta parte, hay que agregar validacion por tipo de conexion.
+        if(!grafoCiudades.existeVertice(destino)){
+            return Retorno.error5("No existe el destino");
+        }
+        if(!grafoCiudades.existeArista(origen, destino, identificadorConexion)){
+            return Retorno.error6("no existe la conexcion");
+        }
+
+        Arista aristaActualizada = grafoCiudades.getArista(origen, destino);
+        aristaActualizada.setTipo(tipo);
+        aristaActualizada.setPeso(tiempo);
+        aristaActualizada.setCosto(costo);
+
+        return Retorno.ok("Creada correctamente");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package Estructuras;
 
 import dominio.Ciudad;
+import interfaz.TipoConexion;
 
 public class Grafo {
     private int cantidad;
@@ -40,6 +41,12 @@ public class Grafo {
 
     }
 
+    public boolean existeArista(Ciudad origen, Ciudad destino, int identificadorConexion){
+        int posOrigen = obtenerPos(origen);
+        int posDestino = obtenerPos(destino);
+        return matAdy[posOrigen][posDestino].isExiste() && matAdy[posOrigen][posDestino].getIdentificadorConexion() == identificadorConexion;
+    }
+
     public boolean esLleno(){
         return cantidad==tope;
     }
@@ -58,6 +65,22 @@ public class Grafo {
             }
         }
         return -1;
+    }
+
+    public Arista getArista(Ciudad origen, Ciudad destino){
+        int posOrigen = obtenerPos(origen);
+        int posDestino = obtenerPos(destino);
+        return matAdy[posOrigen][posDestino];
+    }
+    public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, double costo, double peso, TipoConexion tipo) {
+        int posOrigen = obtenerPos(origen);
+        int posDestino = obtenerPos(destino);
+        matAdy[posOrigen][posDestino].setExiste(true);
+        matAdy[posOrigen][posDestino].setPeso(peso);
+        matAdy[posOrigen][posDestino].setCosto(costo);
+        matAdy[posOrigen][posDestino].setIdentificadorConexion(identificadorConexion);
+        matAdy[posOrigen][posDestino].setTipo(tipo);
+
     }
 
     //busca la posicion de la ciudad que pasamos por parametro
@@ -90,7 +113,7 @@ public class Grafo {
         cantidad--;
     }
     public boolean existeVertice(Ciudad vert) {
-        //Implementar...
+
         return obtenerPos(vert) != -1;
     }
 

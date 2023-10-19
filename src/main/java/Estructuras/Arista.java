@@ -1,18 +1,49 @@
 package Estructuras;
 
+import interfaz.TipoConexion;
+
 public class Arista {
 
     private boolean existe;
-    private int peso;
+    private double peso;
+    private int identificadorConexion;
+
+    private double costo;
+
+    private TipoConexion tipo;
 
     public Arista() {
         this.existe = false;
         this.peso = 0;
+        this.costo = 0;
+        this.identificadorConexion = 0;
+        this.tipo = null;
+
+
     }
 
-    public Arista(int peso){
-        this.existe=true;
-        this.peso=peso;
+    public int getIdentificadorConexion() {
+        return identificadorConexion;
+    }
+
+    public void setIdentificadorConexion(int identificadorConexion) {
+        this.identificadorConexion = identificadorConexion;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public TipoConexion getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoConexion tipo) {
+        this.tipo = tipo;
     }
 
     public boolean isExiste() {
@@ -23,11 +54,11 @@ public class Arista {
         this.existe = existe;
     }
 
-    public int getPeso() {
+    public double getPeso() {
         return peso;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso(double peso) {
         this.peso = peso;
     }
 }
