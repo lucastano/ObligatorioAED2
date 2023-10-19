@@ -3,6 +3,8 @@ package Estructuras;
 import dominio.Ciudad;
 import interfaz.TipoConexion;
 
+import java.sql.Array;
+
 public class Grafo {
     private int cantidad;
     private final int tope;
@@ -116,5 +118,39 @@ public class Grafo {
 
         return obtenerPos(vert) != -1;
     }
+
+    public Ciudad getVertice(Ciudad vert){
+        int pos = obtenerPos(vert);
+        return vertices[pos];
+    }
+
+
+    //Pre existeVertice(vert)
+    public Ciudad[] dfs(Ciudad vert, int cantidad){
+        int posInicial = obtenerPos(vert);
+        boolean[] visitados = new boolean[tope]; //por defecto todo en false
+        int[] posiciones = new int[tope];
+        dfsRec(posInicial, visitados, cantidad, posiciones, 0);
+
+        Ciudad[] ciudades = new Ciudad[posiciones.length-1];
+        for(int i = 0; i < posiciones.length-1 &&  i <= cantidad ; i++){
+            ciudades[i] = vertices[posiciones[i]];
+        }
+        return ciudades;
+
+    }
+
+    private void dfsRec(int pos, boolean[] visitados, int cantidad, int[] posiciones, int index){
+        visitados[pos] = true;
+        //obtener los adyacentes no visitados y llamar recursivo
+        for (int j = 0; j < tope &&  j <= cantidad ; j++) {
+            if( matAdy[pos][j].isExiste() && !visitados[j]){
+                posiciones[index] = pos;
+                dfsRec(j, visitados, cantidad, posiciones, index + 1);
+            }
+        }
+    }
+
+
 
 }

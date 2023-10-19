@@ -40,7 +40,7 @@ public class Ciudad  implements Comparable<Ciudad>{
     }
     @Override
     public String toString() {
-        return nombre +" - "+codigo;
+        return codigo +";"+ nombre;
     }
 }
 

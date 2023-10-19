@@ -252,7 +252,30 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno listadoCiudadesCantTrasbordos(String codigo, int cantidad) {
-        return Retorno.noImplementada();
+
+        if(cantidad < 0){
+            return Retorno.error1("la cantidad no puede ser menor a 0");
+        }
+        if (codigo == null || codigo.isEmpty()){
+            return Retorno.error2("el código es nulo");
+        }
+        Ciudad ciudad = new Ciudad(codigo, "busqueda");
+        if(!ciudad.validarCodigo()){
+            return Retorno.error3("el codigo no es valido");
+        }
+        if (!grafoCiudades.existeVertice(ciudad)){
+            return Retorno.error4("No existe la ciudad");
+        }
+        if(cantidad == 0){
+            Ciudad c = grafoCiudades.getVertice(ciudad);
+            return Retorno.ok(c.toString());
+        }
+        Ciudad[] visitadas = grafoCiudades.dfs(ciudad, cantidad);
+
+        for (int i = 0; i < visitadas.length-1; i++){
+            System.out.println(visitadas[i]);
+        }
+        return Retorno.ok();
     }
 
     @Override
