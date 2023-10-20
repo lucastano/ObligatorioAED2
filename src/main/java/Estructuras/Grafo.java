@@ -124,33 +124,42 @@ public class Grafo {
         return vertices[pos];
     }
 
-
     //Pre existeVertice(vert)
-    public Ciudad[] dfs(Ciudad vert, int cantidad){
+    public ListaImp<Ciudad> dfs(Ciudad vert, int cantidad){
         int posInicial = obtenerPos(vert);
         boolean[] visitados = new boolean[tope]; //por defecto todo en false
-        int[] posiciones = new int[tope];
-        dfsRec(posInicial, visitados, cantidad, posiciones, 0);
-
-        Ciudad[] ciudades = new Ciudad[posiciones.length-1];
-        for(int i = 0; i < posiciones.length-1 &&  i <= cantidad ; i++){
-            ciudades[i] = vertices[posiciones[i]];
+        ListaImp<Ciudad> ciudades = new ListaImp<>();
+        if(cantidad > tope){
+            cantidad = tope;
         }
+        dfsRec(posInicial, visitados, ciudades, cantidad );
         return ciudades;
-
     }
 
-    private void dfsRec(int pos, boolean[] visitados, int cantidad, int[] posiciones, int index){
+    private void dfsRec(int pos, boolean[] visitados, ListaImp<Ciudad> ciudades, int cantidad ){
+        if(cantidad == 0){
+            Ciudad c = vertices[pos];
+            if(ciudades.existe(c)){
+                return;
+            }
+            ciudades.insertar(c);
+            return;
+        }
         visitados[pos] = true;
-        //obtener los adyacentes no visitados y llamar recursivo
-        for (int j = 0; j < tope &&  j <= cantidad ; j++) {
+        for (int j = 0; j < tope; j++) {
             if( matAdy[pos][j].isExiste() && !visitados[j]){
-                posiciones[index] = pos;
-                dfsRec(j, visitados, cantidad, posiciones, index + 1);
-                int pepe = 0;
+                Ciudad c = vertices[j];
+                ciudades.insertar(c);
+                dfsRec(j, visitados, ciudades, cantidad-1);
             }
         }
+        dfsRec(pos, visitados, ciudades, cantidad-1);
     }
+
+
+
+
+
 
 
 

@@ -270,13 +270,15 @@ public class ImplementacionSistema implements Sistema {
             Ciudad c = grafoCiudades.getVertice(ciudad);
             return Retorno.ok(c.toString());
         }
-        Ciudad[] visitadas = grafoCiudades.dfs(ciudad, cantidad);
-
-        for (int i = 0; i < visitadas.length-1; i++){
-            System.out.println(visitadas[i]);
+        ListaImp<Ciudad> ciudades = grafoCiudades.dfs(ciudad, cantidad);
+        String ciudadesRetorno = "";
+        for (Ciudad c : ciudades){
+            ciudadesRetorno += c.toString() + "|";
         }
-        return Retorno.ok();
+
+        return Retorno.ok(ciudadesRetorno.substring(0, ciudadesRetorno.length()-1));
     }
+
 
     @Override
     public Retorno viajeCostoMinimo(String codigoCiudadOrigen, String codigoCiudadDestino) {

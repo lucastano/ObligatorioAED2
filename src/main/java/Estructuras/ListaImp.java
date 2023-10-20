@@ -118,7 +118,11 @@ public class ListaImp<T extends Comparable<T>> implements Lista<T> {
             anterior.setSig(nuevoNodo);
         } else {
             nuevoNodo.setSig(actual);
-            anterior.setSig(nuevoNodo);
+            if (anterior != null) {
+                anterior.setSig(nuevoNodo);
+            } else {
+                inicio = nuevoNodo;
+            }
         }
         largo++;
     }
