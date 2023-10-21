@@ -239,7 +239,7 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error5("No existe el destino");
         }
         if(!grafoCiudades.existeArista(origen, destino, identificadorConexion)){
-            return Retorno.error6("no existe la conexcion");
+            return Retorno.error6("no existe la conexion");
         }
 
         Arista aristaActualizada = grafoCiudades.getArista(origen, destino);
@@ -282,7 +282,30 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimo(String codigoCiudadOrigen, String codigoCiudadDestino) {
-        return Retorno.noImplementada();
+
+        if(codigoCiudadOrigen==null || codigoCiudadOrigen.isEmpty() || codigoCiudadDestino==null || codigoCiudadDestino.isEmpty()){
+            return Retorno.error1("algun codigo vacio");
+        }
+        Ciudad ciudadOrigen = new Ciudad(codigoCiudadOrigen,"nombre");
+        Ciudad ciudadDestino = new Ciudad(codigoCiudadDestino,"nombre");
+        if(!ciudadDestino.validarCodigo() || !ciudadOrigen.validarCodigo()){
+            return Retorno.error2("codigo de ciudad invalido");
+        }
+
+        if(!grafoCiudades.existeVertice(ciudadOrigen)){
+            return Retorno.error4("No existe el origen");
+        }
+        if(!grafoCiudades.existeVertice(ciudadDestino)){
+            return Retorno.error5("No existe el destino");
+        }
+        //verifica que hay conexion entre las 2 ciudades , en orden origen destino, destino origen
+
+        if(!grafoCiudades.dfs2(ciudadOrigen,ciudadDestino)){
+            return Retorno.error3("no hay camino");
+        }
+
+
+        return Retorno.ok();
     }
 
 

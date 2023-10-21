@@ -48,6 +48,17 @@ public class Grafo {
         int posDestino = obtenerPos(destino);
         return matAdy[posOrigen][posDestino].isExiste() && matAdy[posOrigen][posDestino].getIdentificadorConexion() == identificadorConexion;
     }
+    public boolean existeArista2(Ciudad origen, Ciudad destino){
+        int posOrigen = obtenerPos(origen);
+        int posDestino = obtenerPos(destino);
+        if(matAdy[posOrigen][posDestino].isExiste() || matAdy[posDestino][posOrigen].isExiste()){
+            return true;
+
+        }
+        return false;
+    }
+
+
 
     public boolean esLleno(){
         return cantidad==tope;
@@ -74,7 +85,7 @@ public class Grafo {
         int posDestino = obtenerPos(destino);
         return matAdy[posOrigen][posDestino];
     }
-    public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, double costo, double peso, TipoConexion tipo) {
+    public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, int costo, double peso, TipoConexion tipo) {
         int posOrigen = obtenerPos(origen);
         int posDestino = obtenerPos(destino);
         matAdy[posOrigen][posDestino].setExiste(true);
@@ -155,6 +166,97 @@ public class Grafo {
         }
         dfsRec(pos, visitados, ciudades, cantidad-1);
     }
+
+    //esta funcion recorre el grafo con dfs desde ciudad de origen y verifica si la ciudad
+    // de destino esta en el array de visitados, si esta significa que hay conexion entre las 2 ciudades
+    public boolean dfs2(Ciudad origen, Ciudad destino){
+        int posInicial = obtenerPos(origen);
+        int posDestino= obtenerPos(destino);
+        boolean [] visitados= new boolean[tope];
+        dfs2(posInicial,visitados);
+        //si la posicion del destino final no fue visitado, no hay conexion
+        return visitados[posDestino];
+    }
+
+
+    private void dfs2(int pos, boolean[] visitados) {
+       visitados[pos]=true;
+        for (int j = 0; j < tope; j++) {
+            if(matAdy[pos][j].isExiste() && !visitados[j]){
+                dfs2(j,visitados);
+            }
+        }
+    }
+
+
+    public int dijkstra(Ciudad origen, Ciudad destino){
+
+        int posOrigen=obtenerPos(origen);
+        int posDestino=obtenerPos(destino);
+
+        //creamos e inicializamos estructuras
+        boolean[]visitados=new boolean[tope];
+        int[]costos=new int[tope];
+        Ciudad []anterior=new Ciudad[tope];
+
+        for (int i = 0; i < tope; i++) {
+            costos[i]=Integer.MAX_VALUE;
+
+        }
+        //marcar origen con distancia 0
+        // la primera posicion tiene costo 0
+        costos[posOrigen]=0;
+        //loop por cantidad de vertices
+        for (int i = 0; i < cantidad ; i++) {
+
+            // 1) obtener vertice de menor costo no visitado
+            int pos=obtenerSiguienteVerticeNoVisitadoDeMenorCosto(costos,visitados);
+            if(pos!=-1){
+                //2) Visitarlo
+                visitados[pos]=true;
+
+                //3) evaluar si tengo que actualizar el costo de los no visitados
+                for (int j = 0; j <tope ; j++) {
+                    //verifico los adyasentes
+                    if(matAdy[pos][j].isExiste() && !visitados[j]){
+                        int costoNuevo=costos[pos]+matAdy[pos][j].getCosto();
+                        if(costoNuevo<costos[j]){
+                            costos[j]=costoNuevo;
+                        }
+                    }
+                    
+                }
+            }
+
+
+
+        }
+
+
+        return costos[posDestino];
+
+
+
+    }
+
+    private int obtenerSiguienteVerticeNoVisitadoDeMenorCosto(int []costos, boolean []visitados){
+        //posicion del minimo inicializada en -1 , si nos devuelve esa posicion es que no encontro nada
+        int posMin=-1;
+        //minimo en max value
+        int minimo = Integer.MAX_VALUE;
+        //puedo recorrer cualquier de los array ya que tienen la misma cantidad de elementos
+        for (int i = 0; i < costos.length; i++) {
+            //si el costo es mayor al minimo y no fue visitado
+            if(!visitados[i] && costos[i]<minimo  ){
+                minimo=costos[i];
+                posMin=i;
+            }
+
+        }
+        return posMin;
+    }
+
+
 
 
 
