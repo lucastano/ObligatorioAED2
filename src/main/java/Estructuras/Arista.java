@@ -9,7 +9,7 @@ public class Arista {
     private int identificadorConexion;
 
     //lo cambie a int por problemas en el dijkstra
-    private int costo;
+    private double costo;
 
     private TipoConexion tipo;
 
@@ -31,11 +31,11 @@ public class Arista {
         this.identificadorConexion = identificadorConexion;
     }
 
-    public int getCosto() {
+    public double getCosto() {
         return costo;
     }
 
-    public void setCosto(int costo) {
+    public void setCosto(double costo) {
         this.costo = costo;
     }
 

@@ -1,6 +1,7 @@
 package Estructuras;
 
 import dominio.Ciudad;
+import dominio.ObjAuxCiudad;
 import interfaz.TipoConexion;
 
 import java.sql.Array;
@@ -85,12 +86,12 @@ public class Grafo {
         int posDestino = obtenerPos(destino);
         return matAdy[posOrigen][posDestino];
     }
-    public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, int costo, double peso, TipoConexion tipo) {
+    public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, double costoTiempo, double peso, TipoConexion tipo) {
         int posOrigen = obtenerPos(origen);
         int posDestino = obtenerPos(destino);
         matAdy[posOrigen][posDestino].setExiste(true);
         matAdy[posOrigen][posDestino].setPeso(peso);
-        matAdy[posOrigen][posDestino].setCosto(costo);
+        matAdy[posOrigen][posDestino].setCosto(costoTiempo);
         matAdy[posOrigen][posDestino].setIdentificadorConexion(identificadorConexion);
         matAdy[posOrigen][posDestino].setTipo(tipo);
 
@@ -189,14 +190,15 @@ public class Grafo {
     }
 
 
-    public int dijkstra(Ciudad origen, Ciudad destino){
+    //hay que modificarlo para que retorne los visitados
+    public ObjAuxCiudad  dijkstra(Ciudad origen, Ciudad destino){
 
         int posOrigen=obtenerPos(origen);
         int posDestino=obtenerPos(destino);
 
         //creamos e inicializamos estructuras
         boolean[]visitados=new boolean[tope];
-        int[]costos=new int[tope];
+        double []costos=new double[tope];
         Ciudad []anterior=new Ciudad[tope];
 
         for (int i = 0; i < tope; i++) {
@@ -215,35 +217,39 @@ public class Grafo {
                 //2) Visitarlo
                 visitados[pos]=true;
 
-                //3) evaluar si tengo que actualizar el costo de los no visitados
+                //3) evaluar si tengo que actualizar el costo de los adyasentes no visitados
                 for (int j = 0; j <tope ; j++) {
                     //verifico los adyasentes
-                    if(matAdy[pos][j].isExiste() && !visitados[j]){
-                        int costoNuevo=costos[pos]+matAdy[pos][j].getCosto();
-                        if(costoNuevo<costos[j]){
-                            costos[j]=costoNuevo;
+                    if(matAdy[pos][j].isExiste() && !visitados[j]){//verifico los adyasentes y si estan visitados
+                        double costoNuevo=costos[pos]+matAdy[pos][j].getCosto();
+                        //costo nuevo es el nuevo costo para llegar a j pasando por pos
+                        if(costoNuevo<costos[j]){//verifico si tengo que actualizar costo
+                            costos[j]=costoNuevo;//actualizo costo
+                            anterior[j]=vertices[pos];//actualizo anterior
                         }
                     }
                     
                 }
             }
 
+        }
+        String []ciudades=new String[tope];
+        for (int i = 0; i <tope ; i++) {
+            if(visitados[i]){
+                ciudades[i]=vertices[i].toString();
+            }
 
 
         }
-
-
-        return costos[posDestino];
-
-
-
+        ObjAuxCiudad auxCiudad=new ObjAuxCiudad(costos[posDestino],ciudades);
+        return auxCiudad;
     }
 
-    private int obtenerSiguienteVerticeNoVisitadoDeMenorCosto(int []costos, boolean []visitados){
+    private int obtenerSiguienteVerticeNoVisitadoDeMenorCosto(double []costos, boolean []visitados){
         //posicion del minimo inicializada en -1 , si nos devuelve esa posicion es que no encontro nada
         int posMin=-1;
         //minimo en max value
-        int minimo = Integer.MAX_VALUE;
+        double minimo = Integer.MAX_VALUE;
         //puedo recorrer cualquier de los array ya que tienen la misma cantidad de elementos
         for (int i = 0; i < costos.length; i++) {
             //si el costo es mayor al minimo y no fue visitado

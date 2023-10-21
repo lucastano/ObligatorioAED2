@@ -6,6 +6,7 @@ import Estructuras.Arista;
 import Estructuras.Grafo;
 import Estructuras.ListaImp;
 import dominio.Ciudad;
+import dominio.ObjAuxCiudad;
 import interfaz.Retorno;
 import dominio.ObjAux;
 import dominio.Viajero;
@@ -303,9 +304,17 @@ public class ImplementacionSistema implements Sistema {
         if(!grafoCiudades.dfs2(ciudadOrigen,ciudadDestino)){
             return Retorno.error3("no hay camino");
         }
+        ObjAuxCiudad costo=grafoCiudades.dijkstra(ciudadOrigen,ciudadDestino);
+
+        System.out.println("costo"+costo.getCosto());
+        String []array=costo.getCiudadesVisitadas();
+        for (int i = 0; i < array.length; i++) {
+            System.out.println("ciudad");
+            System.out.println(array[i]);
+        }
 
 
-        return Retorno.ok();
+        return Retorno.ok(costo.getCosto(),costo.getCiudadesVisitadas().toString());
     }
 
 
