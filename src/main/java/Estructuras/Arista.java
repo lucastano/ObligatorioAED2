@@ -2,7 +2,7 @@ package Estructuras;
 
 import interfaz.TipoConexion;
 
-public class Arista {
+public class Arista  {
 
     private boolean existe;
     private double peso;

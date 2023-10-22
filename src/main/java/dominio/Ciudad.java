@@ -42,6 +42,7 @@ public class Ciudad  implements Comparable<Ciudad>{
     public String toString() {
         return codigo +";"+ nombre;
     }
+
 }
 
 

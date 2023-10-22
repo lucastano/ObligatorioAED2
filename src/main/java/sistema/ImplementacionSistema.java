@@ -306,15 +306,9 @@ public class ImplementacionSistema implements Sistema {
         }
         ObjAuxCiudad costo=grafoCiudades.dijkstra(ciudadOrigen,ciudadDestino);
 
-        System.out.println("costo"+costo.getCosto());
-        String []array=costo.getCiudadesVisitadas();
-        for (int i = 0; i < array.length; i++) {
-            System.out.println("ciudad");
-            System.out.println(array[i]);
-        }
 
 
-        return Retorno.ok(costo.getCosto(),costo.getCiudadesVisitadas().toString());
+        return Retorno.ok(costo.getCosto(),costo.getCiudadesVisitadas().substring(0, costo.getCiudadesVisitadas().length()-1));
     }
 
 

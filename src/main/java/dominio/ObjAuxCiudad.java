@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public class ObjAuxCiudad {
     private double costo;
-    private String[]ciudadesVisitadas;
+    private String ciudadesVisitadas;
 
-    public ObjAuxCiudad(double costo, String[] ciudadesVisitadas) {
+    public ObjAuxCiudad(double costo, String ciudadesVisitadas) {
         this.costo = costo;
         this.ciudadesVisitadas = ciudadesVisitadas;
     }
@@ -19,13 +19,12 @@ public class ObjAuxCiudad {
         this.costo = costo;
     }
 
-    public String[] getCiudadesVisitadas() {
+    public String getCiudadesVisitadas() {
         return ciudadesVisitadas;
     }
 
-    public void setCiudadesVisitadas(String[] ciudadesVisitadas) {
+    public void setCiudadesVisitadas(String ciudadesVisitadas) {
         this.ciudadesVisitadas = ciudadesVisitadas;
     }
-
 
 }

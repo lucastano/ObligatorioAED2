@@ -190,60 +190,77 @@ public class Grafo {
     }
 
 
-    //hay que modificarlo para que retorne los visitados
-    public ObjAuxCiudad  dijkstra(Ciudad origen, Ciudad destino){
+    public ObjAuxCiudad dijkstra(Ciudad origen, Ciudad destino) {
+        int posOrigen = obtenerPos(origen);
+        int posDestino = obtenerPos(destino);
 
-        int posOrigen=obtenerPos(origen);
-        int posDestino=obtenerPos(destino);
-
-        //creamos e inicializamos estructuras
-        boolean[]visitados=new boolean[tope];
-        double []costos=new double[tope];
-        Ciudad []anterior=new Ciudad[tope];
+        // Crear e inicializar estructuras
+        boolean[] visitados = new boolean[tope];
+        double[] costos = new double[tope];
+        Ciudad[] anterior = new Ciudad[tope];
 
         for (int i = 0; i < tope; i++) {
-            costos[i]=Integer.MAX_VALUE;
-
+            costos[i] = Integer.MAX_VALUE;
         }
-        //marcar origen con distancia 0
-        // la primera posicion tiene costo 0
-        costos[posOrigen]=0;
-        //loop por cantidad de vertices
-        for (int i = 0; i < cantidad ; i++) {
 
-            // 1) obtener vertice de menor costo no visitado
-            int pos=obtenerSiguienteVerticeNoVisitadoDeMenorCosto(costos,visitados);
-            if(pos!=-1){
-                //2) Visitarlo
-                visitados[pos]=true;
+        // Marcar origen con distancia 0
+        costos[posOrigen] = 0;
 
-                //3) evaluar si tengo que actualizar el costo de los adyasentes no visitados
-                for (int j = 0; j <tope ; j++) {
-                    //verifico los adyasentes
-                    if(matAdy[pos][j].isExiste() && !visitados[j]){//verifico los adyasentes y si estan visitados
-                        double costoNuevo=costos[pos]+matAdy[pos][j].getCosto();
-                        //costo nuevo es el nuevo costo para llegar a j pasando por pos
-                        if(costoNuevo<costos[j]){//verifico si tengo que actualizar costo
-                            costos[j]=costoNuevo;//actualizo costo
-                            anterior[j]=vertices[pos];//actualizo anterior
+        String[] tipoConexiones = new String[tope]; // Arreglo para almacenar las conexiones
+        int x = 0; // Variable para llevar un seguimiento de la posición en el arreglo
+
+        // Loop por la cantidad de vértices
+        for (int i = 0; i < cantidad; i++) {
+            // 1) Obtener vértice de menor costo no visitado
+            int pos = obtenerSiguienteVerticeNoVisitadoDeMenorCosto(costos, visitados);
+            if (pos != -1) {
+                // 2) Visitarlo
+                visitados[pos] = true;
+
+                // 3) Evaluar si tengo que actualizar el costo de los adyacentes no visitados
+                for (int j = 0; j < tope; j++) {
+                    // Verificar los adyacentes
+                    if (matAdy[pos][j].isExiste() && !visitados[j]) {
+                        double costoNuevo = costos[pos] + matAdy[pos][j].getPeso();
+                        String conexion = matAdy[pos][j].getTipo().name();
+                        tipoConexiones[x] = conexion;
+                        x++;
+                        // Costo nuevo es el nuevo costo para llegar a j pasando por pos
+                        if (costoNuevo < costos[j]) {
+                            // Verificar si tengo que actualizar el costo
+                            costos[j] = costoNuevo;
+                            anterior[j] = vertices[pos];
                         }
                     }
-                    
                 }
             }
-
         }
-        String []ciudades=new String[tope];
-        for (int i = 0; i <tope ; i++) {
-            if(visitados[i]){
-                ciudades[i]=vertices[i].toString();
-            }
 
-
+        // Obtener el camino más corto
+        int pos = posDestino;
+        ListaImp<String> caminoRecorrido = new ListaImp<>();
+        while (pos != posOrigen) {
+            caminoRecorrido.insertarDos(vertices[pos].toString());
+            pos = obtenerPos(anterior[pos]);
         }
-        ObjAuxCiudad auxCiudad=new ObjAuxCiudad(costos[posDestino],ciudades);
+        caminoRecorrido.insertarDos(vertices[posOrigen].toString());
+
+        String retorno = "";
+        int index = x - 1; // Utilizar el índice inverso para recorrer el arreglo de conexiones
+        for (String ciudad : caminoRecorrido) {
+
+            String conexion = tipoConexiones[index];
+            retorno += ciudad + "|" + conexion + "|";
+            index--;
+        }
+
+        ObjAuxCiudad auxCiudad = new ObjAuxCiudad(costos[posDestino], retorno);
         return auxCiudad;
     }
+
+
+
+
 
     private int obtenerSiguienteVerticeNoVisitadoDeMenorCosto(double []costos, boolean []visitados){
         //posicion del minimo inicializada en -1 , si nos devuelve esa posicion es que no encontro nada

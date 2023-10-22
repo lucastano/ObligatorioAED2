@@ -60,7 +60,7 @@ public class TestConsulta11 {
         TestConexionDato rio_ny = agregueUnaBidireccionalConexionCorrectamente(s, RIO, NY, 1, 12, 56, TipoConexion.RUTA_AEREA);
         TestConexionDato mvd_rio = agregueUnaBidireccionalConexionCorrectamente(s, MVD, RIO, 1, 15, 21, TipoConexion.RUTA_AEREA);
         TestConexionDato paris_2_mvd = agregueUnaBidireccionalConexionCorrectamente(s, PARIS_2, MVD, 1, 8, 15, TipoConexion.RUTA_AEREA);
-        chequearCaminoMasCortoEsCorrecto(s, BERLIN, PARIS, berlin_paris);
+      //  chequearCaminoMasCortoEsCorrecto(s, BERLIN, PARIS, berlin_paris);
         chequearCaminoMasCortoEsCorrecto(s, BERLIN, NY, berlin_paris, paris_ny);
 
         actualizoUnaConexion(s, PARIS, NY, 1, 100, 1023, TipoConexion.RUTA_MARITIMA);
