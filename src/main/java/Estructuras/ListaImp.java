@@ -38,6 +38,19 @@ public class ListaImp<T extends Comparable<T>> implements Lista<T> {
         this.largo = largo;
     }
 
+    public T get(int index) {
+        if (index < 0 || index >= largo) {
+            throw new IndexOutOfBoundsException("Índice fuera de rango");
+        }
+
+        NodoLista<T> nodoActual = inicio;
+        for (int i = 0; i < index; i++) {
+            nodoActual = nodoActual.getSig();
+        }
+
+        return nodoActual.getDato();
+    }
+
     public void insertarOrd(T dato){
         NodoLista<T>nodo=new NodoLista<>(dato);
         if(this.esVacia()){

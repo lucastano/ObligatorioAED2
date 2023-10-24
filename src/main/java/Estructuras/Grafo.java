@@ -198,7 +198,6 @@ public class Grafo {
         boolean[] visitados = new boolean[tope];
         double[] costos = new double[tope];
         Ciudad[] anterior = new Ciudad[tope];
-
         for (int i = 0; i < tope; i++) {
             costos[i] = Integer.MAX_VALUE;
         }
@@ -206,8 +205,6 @@ public class Grafo {
         // Marcar origen con distancia 0
         costos[posOrigen] = 0;
 
-        String[] tipoConexiones = new String[tope]; // Arreglo para almacenar las conexiones
-        int x = 0; // Variable para llevar un seguimiento de la posición en el arreglo
 
         // Loop por la cantidad de vértices
         for (int i = 0; i < cantidad; i++) {
@@ -222,21 +219,20 @@ public class Grafo {
                     // Verificar los adyacentes
                     if (matAdy[pos][j].isExiste() && !visitados[j]) {
                         double costoNuevo = costos[pos] + matAdy[pos][j].getPeso();
-                        String conexion = matAdy[pos][j].getTipo().name();
-                        tipoConexiones[x] = conexion;
-                        x++;
+
                         // Costo nuevo es el nuevo costo para llegar a j pasando por pos
                         if (costoNuevo < costos[j]) {
                             // Verificar si tengo que actualizar el costo
                             costos[j] = costoNuevo;
                             anterior[j] = vertices[pos];
+
                         }
                     }
                 }
             }
         }
 
-        // Obtener el camino más corto
+        // pos 1 y pos 2 = matady[1][2].gettipo().tostring()
         int pos = posDestino;
         ListaImp<String> caminoRecorrido = new ListaImp<>();
         while (pos != posOrigen) {
@@ -246,12 +242,10 @@ public class Grafo {
         caminoRecorrido.insertarDos(vertices[posOrigen].toString());
 
         String retorno = "";
-        int index = x - 1; // Utilizar el índice inverso para recorrer el arreglo de conexiones
         for (String ciudad : caminoRecorrido) {
 
-            String conexion = tipoConexiones[index];
-            retorno += ciudad + "|" + conexion + "|";
-            index--;
+            retorno += ciudad + "|" ;
+
         }
 
         ObjAuxCiudad auxCiudad = new ObjAuxCiudad(costos[posDestino], retorno);

@@ -15,6 +15,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// Federico caimi - 240789
+// Lucas taño - 210149
 public class ImplementacionSistema implements Sistema {
     // aca van a ir las estructuras
     // las ciudades van a ser la cantidad de vertices del grafo
