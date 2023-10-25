@@ -245,7 +245,7 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error6("no existe la conexion");
         }
 
-        Arista aristaActualizada = grafoCiudades.getArista(origen, destino);
+        Arista aristaActualizada = grafoCiudades.getArista(origen, destino, identificadorConexion); // queda pendiente de ver
         aristaActualizada.setTipo(tipo);
         aristaActualizada.setPeso(tiempo);
         aristaActualizada.setCosto(costo);
@@ -307,9 +307,10 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error3("no hay camino");
         }
         ObjAuxCiudad costo=grafoCiudades.dijkstra(ciudadOrigen,ciudadDestino);
-
-
-
+        String retorno = costo.getCiudadesVisitadas();
+        if(retorno.isEmpty()){
+            return Retorno.ok(costo.getCosto(),retorno);
+        }
         return Retorno.ok(costo.getCosto(),costo.getCiudadesVisitadas().substring(0, costo.getCiudadesVisitadas().length()-1));
     }
 

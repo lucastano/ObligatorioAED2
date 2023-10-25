@@ -2,6 +2,7 @@ package Estructuras;
 
 import dominio.Ciudad;
 import dominio.ObjAuxCiudad;
+import dominio.conexionAux;
 import interfaz.TipoConexion;
 
 import java.sql.Array;
@@ -10,6 +11,7 @@ public class Grafo {
     private int cantidad;
     private final int tope;
 
+    private conexionAux[][] matAdy2;
     //vertices son ciudades
     private Ciudad []vertices;
     private Arista [][]matAdy;
@@ -19,11 +21,12 @@ public class Grafo {
         this.tope=tope;
         this.vertices=new Ciudad [tope];//por defecto null
         this.matAdy=new Arista[tope][tope];//por defecto en null
+        this.matAdy2 = new conexionAux[tope][tope]; //por defecto en null
         if(esDirigido) {
             for (int i = 0; i < tope; i++) {
                 for (int j = 0; j < tope; j++) {
                     matAdy[i][j] = new Arista();
-
+                    matAdy2[i][j] = new conexionAux();
                 }
 
             }
@@ -35,7 +38,8 @@ public class Grafo {
                     matAdy[i][j] = new Arista();
                     matAdy[j][i]=matAdy[i][j];
                     //recorre la triangular superior
-
+                    matAdy2[i][j] = new conexionAux();
+                    matAdy2[j][i]=matAdy2[i][j];
                 }
 
             }
@@ -44,11 +48,7 @@ public class Grafo {
 
     }
 
-    public boolean existeArista(Ciudad origen, Ciudad destino, int identificadorConexion){
-        int posOrigen = obtenerPos(origen);
-        int posDestino = obtenerPos(destino);
-        return matAdy[posOrigen][posDestino].isExiste() && matAdy[posOrigen][posDestino].getIdentificadorConexion() == identificadorConexion;
-    }
+
     public boolean existeArista2(Ciudad origen, Ciudad destino){
         int posOrigen = obtenerPos(origen);
         int posDestino = obtenerPos(destino);
@@ -81,7 +81,15 @@ public class Grafo {
         return -1;
     }
 
-    public Arista getArista(Ciudad origen, Ciudad destino){
+    public boolean existeArista(Ciudad origen, Ciudad destino, int identificadorConexion){
+        int posOrigen = obtenerPos(origen);
+        int posDestino = obtenerPos(destino);
+        return matAdy2[posOrigen][posDestino].isExiste() && matAdy2[posOrigen][posDestino].existeArista(identificadorConexion);
+    }
+
+    // en la matriz de conexiones, acceder con orgin y destino al arreglo de aristas y en el arreglo de aristas, debe tener el identificador
+
+    public Arista getArista(Ciudad origen, Ciudad destino, int identificadorConexion){
         int posOrigen = obtenerPos(origen);
         int posDestino = obtenerPos(destino);
         return matAdy[posOrigen][posDestino];
@@ -89,20 +97,22 @@ public class Grafo {
     public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, double costoTiempo, double peso, TipoConexion tipo) {
         int posOrigen = obtenerPos(origen);
         int posDestino = obtenerPos(destino);
-        matAdy[posOrigen][posDestino].setExiste(true);
-        matAdy[posOrigen][posDestino].setPeso(peso);
-        matAdy[posOrigen][posDestino].setCosto(costoTiempo);
-        matAdy[posOrigen][posDestino].setIdentificadorConexion(identificadorConexion);
-        matAdy[posOrigen][posDestino].setTipo(tipo);
+        matAdy2[posOrigen][posDestino].setExiste(true);
+        matAdy2[posOrigen][posDestino].agregarArista(origen, destino,identificadorConexion, costoTiempo, peso, tipo);
+       // matAdy[posOrigen][posDestino].setCosto(costoTiempo);
+      //  matAdy[posOrigen][posDestino].setIdentificadorConexion(identificadorConexion);
+      //  matAdy[posOrigen][posDestino].setTipo(tipo);
 
     }
 
     //busca la posicion de la ciudad que pasamos por parametro
     private int obtenerPos(Ciudad c){
+        if(c != null){
         for(int i=0;i<tope;i++){
             if(c.equals(vertices[i])){
                 return i;
             }
+        }
         }
         return -1;
     }
@@ -159,7 +169,7 @@ public class Grafo {
         }
         visitados[pos] = true;
         for (int j = 0; j < tope; j++) {
-            if( matAdy[pos][j].isExiste() && !visitados[j]){
+            if( matAdy2[pos][j].isExiste() && !visitados[j]){
                 Ciudad c = vertices[j];
                 ciudades.insertar(c);
                 dfsRec(j, visitados, ciudades, cantidad-1);
@@ -183,7 +193,7 @@ public class Grafo {
     private void dfs2(int pos, boolean[] visitados) {
        visitados[pos]=true;
         for (int j = 0; j < tope; j++) {
-            if(matAdy[pos][j].isExiste() && !visitados[j]){
+            if(matAdy2[pos][j].isExiste() && !visitados[j]){
                 dfs2(j,visitados);
             }
         }
@@ -198,6 +208,7 @@ public class Grafo {
         boolean[] visitados = new boolean[tope];
         double[] costos = new double[tope];
         Ciudad[] anterior = new Ciudad[tope];
+        String[] conexiones = new String[tope];
         for (int i = 0; i < tope; i++) {
             costos[i] = Integer.MAX_VALUE;
         }
@@ -217,35 +228,42 @@ public class Grafo {
                 // 3) Evaluar si tengo que actualizar el costo de los adyacentes no visitados
                 for (int j = 0; j < tope; j++) {
                     // Verificar los adyacentes
-                    if (matAdy[pos][j].isExiste() && !visitados[j]) {
-                        double costoNuevo = costos[pos] + matAdy[pos][j].getPeso();
+                            if (matAdy2[pos][j].isExiste() && !visitados[j]) {
+                            // aca hay que recorrer para cada conexion cada arista..
+                            for(Arista a: matAdy2[pos][j].getAristas()){
+                            double costoNuevo = costos[pos] + a.getPeso();
 
-                        // Costo nuevo es el nuevo costo para llegar a j pasando por pos
-                        if (costoNuevo < costos[j]) {
-                            // Verificar si tengo que actualizar el costo
-                            costos[j] = costoNuevo;
-                            anterior[j] = vertices[pos];
-
+                            // Costo nuevo es el nuevo costo para llegar a j pasando por pos
+                            if (costoNuevo < costos[j]) {
+                                // Verificar si tengo que actualizar el costo
+                                costos[j] = costoNuevo;
+                                anterior[j] = vertices[pos];
+                                conexiones[j] = a.getTipo().toString();
+                                // pos
+                            }
                         }
                     }
                 }
             }
         }
 
-        // pos 1 y pos 2 = matady[1][2].gettipo().tostring()
+        // aca lo que tratamos de implementar fue que en base a pos y pos anterior, nos de la conexion
+        // de la misma para agregarla a el retorno string, tmb con un array que guarde los tipos de conexiones,
+        // pero ninguna nos resolvio, el array se acerco..
+
         int pos = posDestino;
         ListaImp<String> caminoRecorrido = new ListaImp<>();
         while (pos != posOrigen) {
-            caminoRecorrido.insertarDos(vertices[pos].toString());
-            pos = obtenerPos(anterior[pos]);
+            int posAnterior = obtenerPos(anterior[pos]);
+            String conexion = conexiones[pos]; // Utilizamos el arreglo conexiones
+            caminoRecorrido.insertarDos(conexion + "|" + vertices[pos].toString());
+            pos = posAnterior;
         }
         caminoRecorrido.insertarDos(vertices[posOrigen].toString());
 
         String retorno = "";
         for (String ciudad : caminoRecorrido) {
-
-            retorno += ciudad + "|" ;
-
+            retorno += ciudad + "|";
         }
 
         ObjAuxCiudad auxCiudad = new ObjAuxCiudad(costos[posDestino], retorno);

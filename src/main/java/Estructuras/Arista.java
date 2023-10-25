@@ -2,7 +2,7 @@ package Estructuras;
 
 import interfaz.TipoConexion;
 
-public class Arista  {
+public class Arista implements Comparable<Arista> {
 
     private boolean existe;
     private double peso;
@@ -61,5 +61,10 @@ public class Arista  {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    @Override
+    public int compareTo(Arista o) {
+        return 0;
     }
 }
