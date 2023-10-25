@@ -92,7 +92,7 @@ public class Grafo {
     public Arista getArista(Ciudad origen, Ciudad destino, int identificadorConexion){
         int posOrigen = obtenerPos(origen);
         int posDestino = obtenerPos(destino);
-        return matAdy[posOrigen][posDestino];
+        return matAdy2[posOrigen][posDestino].getAristaDeConexion(identificadorConexion);
     }
     public void agregarArista(Ciudad origen, Ciudad destino, int identificadorConexion, double costoTiempo, double peso, TipoConexion tipo) {
         int posOrigen = obtenerPos(origen);
