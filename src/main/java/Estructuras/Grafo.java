@@ -99,10 +99,6 @@ public class Grafo {
         int posDestino = obtenerPos(destino);
         matAdy2[posOrigen][posDestino].setExiste(true);
         matAdy2[posOrigen][posDestino].agregarArista(origen, destino,identificadorConexion, costoTiempo, peso, tipo);
-       // matAdy[posOrigen][posDestino].setCosto(costoTiempo);
-      //  matAdy[posOrigen][posDestino].setIdentificadorConexion(identificadorConexion);
-      //  matAdy[posOrigen][posDestino].setTipo(tipo);
-
     }
 
     //busca la posicion de la ciudad que pasamos por parametro
@@ -124,7 +120,7 @@ public class Grafo {
         cantidad++;
     }
     public void borrarVertice(Ciudad vert) {
-        //Implementar...
+
         int pos =obtenerPos(vert);
         vertices[pos]=null;
         for(int i=0;i< matAdy.length;i++)
@@ -210,7 +206,7 @@ public class Grafo {
         Ciudad[] anterior = new Ciudad[tope];
         String[] conexiones = new String[tope];
         for (int i = 0; i < tope; i++) {
-            costos[i] = Integer.MAX_VALUE;
+            costos[i] = Double.MAX_VALUE;
         }
 
         // Marcar origen con distancia 0
@@ -253,7 +249,7 @@ public class Grafo {
 
         int pos = posDestino;
         ListaImp<String> caminoRecorrido = new ListaImp<>();
-        while (pos != posOrigen) {
+        while (pos != posOrigen && pos >= 0) {
             int posAnterior = obtenerPos(anterior[pos]);
             String conexion = conexiones[pos]; // Utilizamos el arreglo conexiones
             caminoRecorrido.insertarDos(conexion + "|" + vertices[pos].toString());
@@ -278,11 +274,11 @@ public class Grafo {
         //posicion del minimo inicializada en -1 , si nos devuelve esa posicion es que no encontro nada
         int posMin=-1;
         //minimo en max value
-        double minimo = Integer.MAX_VALUE;
+        double minimo = Double.MAX_VALUE;
         //puedo recorrer cualquier de los array ya que tienen la misma cantidad de elementos
         for (int i = 0; i < costos.length; i++) {
             //si el costo es mayor al minimo y no fue visitado
-            if(!visitados[i] && costos[i]<minimo  ){
+            if(!visitados[i] && costos[i]< minimo  ){
                 minimo=costos[i];
                 posMin=i;
             }
