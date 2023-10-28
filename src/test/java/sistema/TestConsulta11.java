@@ -41,9 +41,9 @@ public class TestConsulta11 {
     public void testearCaminosMinimos1() {
         Sistema s = tengoUnSistemaValidoConTodasLasCiudades();
         //grafo inicial: https://dreampuf.github.io/GraphvizOnline/#graph%20G%7B%0AV_0%5Blabel%3D%220001BER%3BBerlin%22%5D%3B%0AV_1%5Blabel%3D%22MADRID%3BMadrid%22%5D%3B%0AV_2%5Blabel%3D%22TOKYO%3BTokio%22%5D%3B%0AV_3%5Blabel%3D%22SAN232%3BSantiago%20de%20Chile%22%5D%3B%0AV_4%5Blabel%3D%22WAHS11%3BWashington%22%5D%3B%0AV_5%5Blabel%3D%22PAR01%3BCharles%20de%20Gaulle%22%5D%3B%0AV_6%5Blabel%3D%22MVD001%3BMontevideo%22%5D%3B%0AV_7%5Blabel%3D%22PAR002%3BOrly%22%5D%3B%0AV_8%5Blabel%3D%22RIO01%3BRio%20de%20janeiro%22%5D%3B%0AV_9%5Blabel%3D%22NYNYNY%3BNew%20york%22%5D%3B%0AV_2--V_0%5Blabel%3D%222.0%22%5D%3B%0AV_3--V_0%5Blabel%3D%225.0%22%5D%3B%0AV_3--V_1%5Blabel%3D%2243.0%22%5D%3B%0AV_4--V_1%5Blabel%3D%2260.0%22%5D%3B%0AV_4--V_2%5Blabel%3D%22211.0%22%5D%3B%0AV_5--V_0%5Blabel%3D%2215.0%22%5D%3B%0AV_6--V_2%5Blabel%3D%2211.0%22%5D%3B%0AV_7--V_1%5Blabel%3D%2243.0%22%5D%3B%0AV_7--V_5%5Blabel%3D%2221.0%22%5D%3B%0AV_7--V_6%5Blabel%3D%2215.0%22%5D%3B%0AV_8--V_3%5Blabel%3D%2243.0%22%5D%3B%0AV_8--V_6%5Blabel%3D%2221.0%22%5D%3B%0AV_9--V_4%5Blabel%3D%22264.0%22%5D%3B%0AV_9--V_5%5Blabel%3D%2221.0%22%5D%3B%0AV_9--V_8%5Blabel%3D%2256.0%22%5D%3B%0A%7D%0A
-       TestConexionDato berlin_paris = agregueUnaBidireccionalConexionCorrectamente(s, BERLIN, PARIS, 1, 5, 15, TipoConexion.RUTA_AEREA);
+        TestConexionDato berlin_paris = agregueUnaBidireccionalConexionCorrectamente(s, BERLIN, PARIS, 1, 5, 15, TipoConexion.RUTA_AEREA);
         TestConexionDato berlin_tokyo = agregueUnaBidireccionalConexionCorrectamente(s, BERLIN, TOKYO, 1, 2, 2, TipoConexion.RUTA_AEREA);
-       TestConexionDato berlin_santiago = agregueUnaBidireccionalConexionCorrectamente(s, BERLIN, SANTIAGO, 1, 3, 5, TipoConexion.RUTA_AEREA);
+        TestConexionDato berlin_santiago = agregueUnaBidireccionalConexionCorrectamente(s, BERLIN, SANTIAGO, 1, 3, 5, TipoConexion.RUTA_AEREA);
 
         TestConexionDato madrid_washington = agregueUnaBidireccionalConexionCorrectamente(s, MADRID, WASHINGTON, 1, 11, 60, TipoConexion.RUTA_AEREA);
         TestConexionDato madrid_paris_2 = agregueUnaBidireccionalConexionCorrectamente(s, MADRID, PARIS_2, 1, 9, 43, TipoConexion.RUTA_AEREA);
@@ -63,8 +63,8 @@ public class TestConsulta11 {
         chequearCaminoMasCortoEsCorrecto(s, BERLIN, PARIS, berlin_paris);
         chequearCaminoMasCortoEsCorrecto(s, BERLIN, NY, berlin_paris, paris_ny);
 
-       actualizoUnaConexion(s, PARIS, NY, 1, 100, 1023, TipoConexion.RUTA_MARITIMA);
-       chequearCaminoMasCortoEsCorrecto(s, BERLIN, NY, berlin_tokyo, mvd_tokyo.invertir(), mvd_rio, rio_ny);
+        actualizoUnaConexion(s, PARIS, NY, 1, 100, 1023, TipoConexion.RUTA_MARITIMA);
+        chequearCaminoMasCortoEsCorrecto(s, BERLIN, NY, berlin_tokyo, mvd_tokyo.invertir(), mvd_rio, rio_ny);
     }
 
     @Test

@@ -38,8 +38,8 @@ public class TestConsulta10 {
     public void testearSoloOrigenOk() {
         Sistema s = tengoUnSistemaValidoConTodasLasCiudades();
         checkearConsultaTransbordosTieneLasSiguientesCiudades(s, PARIS, 0, PARIS);
-        checkearConsultaTransbordosTieneLasSiguientesCiudades(s, PARIS, 150, PARIS);
-        checkearConsultaTransbordosTieneLasSiguientesCiudades(s, PARIS, 1000, PARIS); // cambie los numeros porque me daba stackoverflow
+        checkearConsultaTransbordosTieneLasSiguientesCiudades(s, PARIS, 100, PARIS);
+        checkearConsultaTransbordosTieneLasSiguientesCiudades(s, PARIS, 100000, PARIS);
     }
 
     @Test

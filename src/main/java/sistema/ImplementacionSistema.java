@@ -96,9 +96,7 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error2("no existe viajero registrado");
         }
 
-        System.out.println("retorno");
-        System.out.println(aux.getCant());
-        System.out.println(aux.getDato().toString());
+
 
         return Retorno.ok(aux.getCant(),aux.getDato().toString());
     }
